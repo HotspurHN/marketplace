@@ -1,0 +1,67 @@
+type Token @entity {
+  id: ID!
+  tokenId: BigInt
+  tokenURI: String!
+  image: String
+  name: String
+  description: String
+  owner: User
+  updatedAtTimestamp: BigInt
+  ipfsURI: String
+  background: String
+  body: String
+  head: String
+  face: String
+  eyes: String
+  mouth: String
+  mask: String
+  cloud: String
+  heart: String
+  cry: String
+  drop: String
+  listing: Listing
+  listings: [Listing!]! @derivedFrom(field: "token")
+}
+
+type Listing @entity{
+  id: ID!
+  listTimestamp: BigInt
+  updatedAtTimestamp: BigInt
+  price: BigInt!
+  isOpen: Boolean!
+  tokenId: BigInt!
+  token: Token!
+  seller: User
+  sellerId: ID
+}
+
+type History @entity{
+  id: ID!
+  updatedAtTimestamp: BigInt
+  price: BigInt!
+  tokenId: BigInt!
+  token: Token!
+  seller: User
+  sellerId: ID
+  buyer: User
+  buyerId: ID
+  transactionType: String
+}
+
+type User @entity {
+  id: ID!
+  tokens: [Token!]! @derivedFrom(field: "owner")
+  listings: [Listing!]! @derivedFrom(field: "seller") 
+  sells: [History!]! @derivedFrom(field: "seller") 
+  buys: [History!]! @derivedFrom(field: "buyer") 
+}
+
+type _Schema_
+  @fulltext(
+    name: "covenSearch"
+    language: en
+    algorithm: rank
+    include: [{entity: "Token", fields:
+      [{ name: "name" }, { name: "description" }
+    ] }]
+  )

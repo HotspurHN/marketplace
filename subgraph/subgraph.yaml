@@ -1,0 +1,52 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Erc721my
+    network: goerli
+    source:
+      address: "0xa5e69E1b04155108240bfa385d030c8D26191115"
+      abi: Erc721my
+      startBlock: 7539012
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - User
+      abis:
+        - name: Erc721my
+          file: ./abis/Erc721my.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/erc-721-my.ts
+  - kind: ethereum
+    name: Marketplace
+    network: goerli
+    source:
+      address: "0x6C72FCE596aBab5db84470048Dc64d269787879C"
+      abi: Marketplace
+      startBlock: 7539012
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Listing
+      abis:
+        - name: Marketplace
+          file: ./abis/Marketplace.json
+      eventHandlers:
+        - event: ItemBought(indexed uint256,indexed address,indexed address,uint256,uint256)
+          handler: handleItemBought
+        - event: ListingCancelled(uint256)
+          handler: handleListingCancelled
+        - event: ListingCreated(uint256)
+          handler: handleListingCreated
+      file: ./src/marketplace.ts
+features:
+  - fullTextSearch
+  - ipfsOnEthereumContracts

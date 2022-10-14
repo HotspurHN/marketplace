@@ -1,0 +1,10 @@
+{
+  "goerli": {
+    "Erc721my": {
+      "address": "0xa5e69E1b04155108240bfa385d030c8D26191115"
+    },
+    "Marketplace": {
+      "address": "0x6C72FCE596aBab5db84470048Dc64d269787879C"
+    }
+  }
+}
